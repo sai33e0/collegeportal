@@ -4,7 +4,8 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRoleId, getRoleRoute, setAuthData } from "@/lib/auth";
-import { API_BASE_URL, API_ENDPOINTS } from "@/lib/constants";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
 interface LoginResponse {
   access_token: string;
@@ -46,12 +47,15 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.LOGIN}`, {
-        method: "POST",
+      const response = await fetch(`${API}/auth/login`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
 
       if (response.ok) {
