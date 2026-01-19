@@ -14,9 +14,9 @@ export default function AdminDashboard() {
   ];
 
   const quickActions = [
-    { title: "Manage Users", icon: "👥", description: "Add, edit, or remove users", href: "#", color: "#3b82f6" },
-    { title: "Manage Marks", icon: "📝", description: "Enter and update student marks", href: "/admin/marks", color: "#10b981" },
-    { title: "Departments", icon: "🏢", description: "Manage departments", href: "#", color: "#8b5cf6" },
+    { title: "Manage Students", icon: "🎓", description: "Add, edit, or remove students", href: "/admin/students", color: "#3b82f6" },
+    { title: "Manage Faculty", icon: "👨‍🏫", description: "Add, edit, or remove faculty", href: "/admin/faculty", color: "#10b981" },
+    { title: "Manage Marks", icon: "📝", description: "Enter and update student marks", href: "/admin/marks", color: "#8b5cf6" },
     { title: "Subjects", icon: "📖", description: "Configure subjects", href: "#", color: "#f59e0b" },
     { title: "Reports", icon: "📊", description: "View analytics and reports", href: "#", color: "#ef4444" },
     { title: "Settings", icon: "⚙️", description: "System configuration", href: "#", color: "#6b7280" }

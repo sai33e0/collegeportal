@@ -2,6 +2,7 @@
 
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
+import Link from "next/link";
 import { ROLE_IDS } from "@/lib/constants";
 
 export default function FacultyDashboard() {
@@ -25,10 +26,10 @@ export default function FacultyDashboard() {
   ];
 
   const quickActions = [
-    { title: "Enter Marks", icon: "📝", description: "Update internal marks", color: "#3b82f6" },
-    { title: "Attendance", icon: "📋", description: "Mark attendance", color: "#10b981" },
-    { title: "Student List", icon: "👥", description: "View student roster", color: "#8b5cf6" },
-    { title: "Time Table", icon: "🕐", description: "View schedule", color: "#f59e0b" }
+    { title: "Enter Marks", icon: "📝", description: "Update internal/lab marks", color: "#3b82f6", href: "/faculty/marks" },
+    { title: "Attendance", icon: "📋", description: "Mark student attendance", color: "#10b981", href: "/faculty/attendance" },
+    { title: "Student List", icon: "👥", description: "View student roster", color: "#8b5cf6", href: "#" },
+    { title: "Time Table", icon: "🕐", description: "View schedule", color: "#f59e0b", href: "#" }
   ];
 
   const stats = [
@@ -214,36 +215,38 @@ export default function FacultyDashboard() {
             gap: "16px"
           }}>
             {quickActions.map((action, idx) => (
-              <div key={idx} style={{
-                background: "white",
-                borderRadius: "14px",
-                padding: "28px",
-                textAlign: "center",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                borderTop: `4px solid ${action.color}`
-              }}>
+              <Link key={idx} href={action.href} style={{ textDecoration: "none" }}>
                 <div style={{
-                  width: "60px",
-                  height: "60px",
-                  background: `${action.color}15`,
+                  background: "white",
                   borderRadius: "14px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "30px",
-                  margin: "0 auto 18px"
+                  padding: "28px",
+                  textAlign: "center",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  borderTop: `4px solid ${action.color}`
                 }}>
-                  {action.icon}
+                  <div style={{
+                    width: "60px",
+                    height: "60px",
+                    background: `${action.color}15`,
+                    borderRadius: "14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "30px",
+                    margin: "0 auto 18px"
+                  }}>
+                    {action.icon}
+                  </div>
+                  <h3 style={{ fontSize: "16px", fontWeight: "600", color: "#1f2937", marginBottom: "8px" }}>
+                    {action.title}
+                  </h3>
+                  <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
+                    {action.description}
+                  </p>
                 </div>
-                <h3 style={{ fontSize: "16px", fontWeight: "600", color: "#1f2937", marginBottom: "8px" }}>
-                  {action.title}
-                </h3>
-                <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
-                  {action.description}
-                </p>
-              </div>
+              </Link>
             ))}
           </div>
         </main>

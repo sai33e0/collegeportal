@@ -2,6 +2,7 @@
 
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
+import Link from "next/link";
 import { ROLE_IDS } from "@/lib/constants";
 
 export default function StudentDashboard() {
@@ -26,12 +27,12 @@ export default function StudentDashboard() {
   ];
 
   const quickLinks = [
-    { title: "View Marks", icon: "📊", description: "Check your internal marks", color: "#3b82f6" },
-    { title: "Attendance", icon: "📅", description: "View attendance records", color: "#10b981" },
-    { title: "Time Table", icon: "🕐", description: "Class schedule", color: "#8b5cf6" },
-    { title: "Fee Details", icon: "💰", description: "Payment status", color: "#f59e0b" },
-    { title: "Library", icon: "📚", description: "E-Library access", color: "#ef4444" },
-    { title: "Results", icon: "🎓", description: "Semester results", color: "#06b6d4" }
+    { title: "View Marks", icon: "📊", description: "Check your internal marks", color: "#3b82f6", href: "/student/marks" },
+    { title: "Attendance", icon: "📅", description: "View attendance records", color: "#10b981", href: "/student/attendance" },
+    { title: "Time Table", icon: "🕐", description: "Class schedule", color: "#8b5cf6", href: "#" },
+    { title: "Fee Details", icon: "💰", description: "Payment status", color: "#f59e0b", href: "#" },
+    { title: "Library", icon: "📚", description: "E-Library access", color: "#ef4444", href: "#" },
+    { title: "Results", icon: "🎓", description: "Semester results", color: "#06b6d4", href: "#" }
   ];
 
   return (
@@ -208,36 +209,38 @@ export default function StudentDashboard() {
             gap: "16px"
           }}>
             {quickLinks.map((link, idx) => (
-              <div key={idx} style={{
-                background: "white",
-                borderRadius: "14px",
-                padding: "24px",
-                textAlign: "center",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                borderBottom: `4px solid ${link.color}`
-              }}>
+              <Link key={idx} href={link.href} style={{ textDecoration: "none" }}>
                 <div style={{
-                  width: "56px",
-                  height: "56px",
-                  background: `${link.color}15`,
+                  background: "white",
                   borderRadius: "14px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "28px",
-                  margin: "0 auto 16px"
+                  padding: "24px",
+                  textAlign: "center",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  borderBottom: `4px solid ${link.color}`
                 }}>
-                  {link.icon}
+                  <div style={{
+                    width: "56px",
+                    height: "56px",
+                    background: `${link.color}15`,
+                    borderRadius: "14px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "28px",
+                    margin: "0 auto 16px"
+                  }}>
+                    {link.icon}
+                  </div>
+                  <h3 style={{ fontSize: "15px", fontWeight: "600", color: "#1f2937", marginBottom: "6px" }}>
+                    {link.title}
+                  </h3>
+                  <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>
+                    {link.description}
+                  </p>
                 </div>
-                <h3 style={{ fontSize: "15px", fontWeight: "600", color: "#1f2937", marginBottom: "6px" }}>
-                  {link.title}
-                </h3>
-                <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>
-                  {link.description}
-                </p>
-              </div>
+              </Link>
             ))}
           </div>
         </main>

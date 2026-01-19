@@ -121,7 +121,7 @@ INSERT INTO departments (name, code) VALUES
 
 ---
 
-### 7. marks (Future)
+### 7. marks
 **Purpose:** Student marks/grades
 
 | Column | Type | Constraints | Description |
@@ -129,10 +129,38 @@ INSERT INTO departments (name, code) VALUES
 | id | serial | PRIMARY KEY | Auto-increment ID |
 | student_id | integer | FOREIGN KEY → students(id) | Student |
 | subject_id | integer | FOREIGN KEY → subjects(id) | Subject |
-| exam_type | text | NOT NULL | 'internal1', 'internal2', 'final' |
+| exam_type | text | NOT NULL | 'internal1', 'internal2', 'lab', 'assignment', 'final' |
 | marks_obtained | numeric(5,2) | CHECK (marks >= 0) | Marks scored |
 | max_marks | numeric(5,2) | NOT NULL | Maximum marks |
+| published | boolean | DEFAULT false | Whether marks are visible to students |
 | created_at | timestamp | DEFAULT now() | Record creation time |
+
+**Indexes:**
+- `idx_marks_student` on student_id
+- `idx_marks_subject` on subject_id
+- UNIQUE(student_id, subject_id, exam_type) - One entry per exam type
+
+---
+
+### 8. attendance
+**Purpose:** Student attendance tracking
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | serial | PRIMARY KEY | Auto-increment ID |
+| student_id | integer | FOREIGN KEY → students(id) | Student |
+| subject_id | integer | FOREIGN KEY → subjects(id) | Subject |
+| faculty_id | integer | FOREIGN KEY → faculty(id) | Faculty who marked |
+| date | date | NOT NULL | Attendance date |
+| period | integer | DEFAULT 1 | Period/hour number |
+| status | text | NOT NULL | 'present', 'absent', 'late', 'excused' |
+| created_at | timestamp | DEFAULT now() | Record creation time |
+
+**Indexes:**
+- `idx_attendance_student` on student_id
+- `idx_attendance_subject` on subject_id
+- `idx_attendance_date` on date
+- UNIQUE(student_id, subject_id, date, period) - One entry per student/subject/date/period
 
 ---
 
@@ -224,16 +252,38 @@ CREATE TABLE faculty_subjects (
 CREATE INDEX idx_fac_sub_faculty ON faculty_subjects(faculty_id);
 CREATE INDEX idx_fac_sub_subject ON faculty_subjects(subject_id);
 
--- 7. marks table (for future use)
+-- 7. marks table
 CREATE TABLE marks (
   id serial PRIMARY KEY,
   student_id integer NOT NULL REFERENCES students(id) ON DELETE CASCADE,
   subject_id integer NOT NULL REFERENCES subjects(id),
-  exam_type text NOT NULL CHECK (exam_type IN ('internal1', 'internal2', 'final')),
+  exam_type text NOT NULL CHECK (exam_type IN ('internal1', 'internal2', 'lab', 'assignment', 'final')),
   marks_obtained numeric(5,2) CHECK (marks_obtained >= 0),
   max_marks numeric(5,2) NOT NULL,
-  created_at timestamp DEFAULT now()
+  published boolean DEFAULT false,
+  created_at timestamp DEFAULT now(),
+  UNIQUE(student_id, subject_id, exam_type)
 );
+
+CREATE INDEX idx_marks_student ON marks(student_id);
+CREATE INDEX idx_marks_subject ON marks(subject_id);
+
+-- 8. attendance table
+CREATE TABLE attendance (
+  id serial PRIMARY KEY,
+  student_id integer NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+  subject_id integer NOT NULL REFERENCES subjects(id),
+  faculty_id integer REFERENCES faculty(id),
+  date date NOT NULL,
+  period integer DEFAULT 1,
+  status text NOT NULL CHECK (status IN ('present', 'absent', 'late', 'excused')),
+  created_at timestamp DEFAULT now(),
+  UNIQUE(student_id, subject_id, date, period)
+);
+
+CREATE INDEX idx_attendance_student ON attendance(student_id);
+CREATE INDEX idx_attendance_subject ON attendance(subject_id);
+CREATE INDEX idx_attendance_date ON attendance(date);
 ```
 
 ---
