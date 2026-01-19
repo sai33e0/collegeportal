@@ -126,7 +126,7 @@ export default function StudentDashboard() {
               boxShadow: "0 4px 20px rgba(0,0,0,0.04)"
             }}>
               <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
-                <span>📅</span> Today&apos;s Classes
+                <span>📅</span> {"Today's Classes"}
               </h2>
               {upcomingClasses.map((cls, idx) => (
                 <div key={idx} style={{

@@ -11,7 +11,7 @@ export default function Header() {
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
-    // Try to get user info from localStorage or fetch from API
+    // Get user name from localStorage (stored during login)
     const storedName = localStorage.getItem("user_name");
     if (storedName) {
       setUserName(storedName);

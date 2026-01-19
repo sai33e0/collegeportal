@@ -478,7 +478,7 @@ export default function AdminMarksPage() {
                   No marks added yet
                 </h3>
                 <p style={{ color: "#6b7280", marginBottom: "20px" }}>
-                  Click &quot;Add Marks&quot; to get started.
+                  Click {'"Add Marks"'} to get started.
                 </p>
               </div>
             ) : (

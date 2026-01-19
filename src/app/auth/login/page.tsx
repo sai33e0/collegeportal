@@ -57,6 +57,10 @@ export default function LoginPage() {
       if (response.ok) {
         const data: LoginResponse = await response.json();
         setAuthData(data.access_token, data.role_id);
+        // Store user name if available
+        if (data.user?.full_name) {
+          localStorage.setItem("user_name", data.user.full_name);
+        }
         const route = getRoleRoute(data.role_id);
         router.push(route);
       } else {
