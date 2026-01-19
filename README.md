@@ -1,36 +1,182 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SRIT College Portal
 
-## Getting Started
+**Production-grade college management system for Srinivasa Ramanujan Institute of Technology**
 
-First, run the development server:
+[![Status](https://img.shields.io/badge/Status-Phase%201%20%26%202%20Complete-success)]()
+[![Backend](https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-green)]()
+[![Frontend](https://img.shields.io/badge/Frontend-Next.js%2016-blue)]()
+[![Database](https://img.shields.io/badge/Database-PostgreSQL-blue)]()
 
+---
+
+## 🎯 What This Is
+
+A complete, production-ready college management portal with:
+- **JWT Authentication** via Supabase
+- **Role-Based Access Control** (Admin, Faculty, Student)
+- **RESTful APIs** for all operations
+- **Modern Frontend** with Next.js 16 + React 19
+- **PostgreSQL Database** with proper relationships
+- **Clean Architecture** ready for expansion
+
+**Not a tutorial project. Built like a real college system.**
+
+---
+
+## 🚀 Quick Start
+
+### 1. Run Verification
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+./verify-setup.sh
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Follow Complete Guide
+→ **[START_HERE.md](START_HERE.md)** ← Step-by-step setup instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Start Servers
+```bash
+# Terminal 1 - Backend
+cd backend && npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Terminal 2 - Frontend
+npm run dev
+```
 
-## Learn More
+### 4. Test
+Open http://localhost:5173
+- Login: `admin@srit.ac.in` / `Admin@123`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Document | What's Inside |
+|----------|---------------|
+| **[START_HERE.md](START_HERE.md)** | Complete setup guide - start here! |
+| **[SETUP_GUIDE.md](SETUP_GUIDE.md)** | Architecture & development workflow |
+| **[backend/README.md](backend/README.md)** | Backend API overview |
+| **[backend/DATABASE_SCHEMA.md](backend/DATABASE_SCHEMA.md)** | Complete database schema + SQL |
+| **[backend/API_TESTING_GUIDE.md](backend/API_TESTING_GUIDE.md)** | API testing with examples |
+| **verify-setup.sh** | Automated verification script |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ✨ Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+✅ JWT Authentication
+✅ Role-Based Access (Admin/Faculty/Student)
+✅ Protected Routes
+✅ Admin CRUD APIs
+✅ Student & Faculty Dashboards
+✅ SRIT Branding
+✅ Production-Ready Code
+
+---
+
+## 🏗️ Tech Stack
+
+**Backend:** Node.js + Express + Supabase + PostgreSQL
+**Frontend:** Next.js 16 + React 19 + TypeScript + Tailwind
+**Auth:** JWT via Supabase Auth
+
+---
+
+## 🗂️ Structure
+
+```
+collegeportal/
+├── backend/          # Node.js Express API
+│   ├── src/         # Routes, middleware, config
+│   └── .env         # Supabase credentials
+├── src/             # Next.js frontend
+│   ├── app/         # Pages (login, dashboards)
+│   ├── components/  # Header, ProtectedRoute
+│   └── lib/         # Auth utilities
+└── [docs]           # Complete documentation
+```
+
+---
+
+## 📊 Test Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@srit.ac.in | Admin@123 |
+| Student | student@srit.ac.in | Student@123 |
+| Faculty | faculty@srit.ac.in | Faculty@123 |
+
+---
+
+## 🔧 Development
+
+```bash
+# Backend
+cd backend
+npm install
+npm run dev
+
+# Frontend
+cd ..
+npm install
+npm run dev
+```
+
+Detailed instructions: [START_HERE.md](START_HERE.md)
+
+---
+
+## 📝 API Endpoints
+
+**Auth:** `/auth/login`, `/auth/logout`
+**Admin:** `/admin/*` (users, subjects, departments)
+**Student:** `/student/*` (profile, subjects, marks)
+**Faculty:** `/faculty/*` (profile, assigned subjects)
+
+Full API docs: [backend/API_TESTING_GUIDE.md](backend/API_TESTING_GUIDE.md)
+
+---
+
+## 🐛 Troubleshooting
+
+**Backend won't start?**
+- Check backend/.env has Supabase credentials
+- Run `npm install` in backend folder
+
+**Login fails?**
+- Verify users created in Supabase
+- Check database schema is deployed
+
+**CORS error?**
+- Frontend must run on port 5173
+- Check package.json: `"dev": "next dev -p 5173"`
+
+Full troubleshooting: [START_HERE.md](START_HERE.md)
+
+---
+
+## ✅ Current Status
+
+| Phase | Status |
+|-------|--------|
+| Phase 1: Backend API | ✅ Complete |
+| Phase 2: Frontend Auth | ✅ Complete |
+| Phase 3: Admin UI | 📋 Planned |
+| Phase 4: Academic Features | 📋 Planned |
+
+---
+
+## 🏫 About
+
+**Institution:** Srinivasa Ramanujan Institute of Technology
+**Website:** https://www.srit.ac.in/
+**Purpose:** Real-world college management system
+
+---
+
+## 📄 License
+
+ISC - Free for educational use
+
+---
+
+**Ready to start?** → [START_HERE.md](START_HERE.md)
