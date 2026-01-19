@@ -2,12 +2,18 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { isAuthenticated, getRoleId, getRoleRoute, setAuthData } from "@/lib/auth";
 import { API_BASE_URL, API_ENDPOINTS } from "@/lib/constants";
 
 interface LoginResponse {
   access_token: string;
   role_id: number;
+  user?: {
+    id: string;
+    email: string;
+    full_name: string;
+  };
 }
 
 export default function LoginPage() {
@@ -16,6 +22,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -50,86 +57,293 @@ export default function LoginPage() {
       if (response.ok) {
         const data: LoginResponse = await response.json();
         setAuthData(data.access_token, data.role_id);
+        // Store user name if available
+        if (data.user?.full_name) {
+          localStorage.setItem("user_name", data.user.full_name);
+        }
         const route = getRoleRoute(data.role_id);
         router.push(route);
       } else {
         setLoading(false);
         setError("Invalid email or password. Please try again.");
       }
-    } catch (err) {
+    } catch {
       setLoading(false);
       setError("Unable to connect to server. Please try again.");
     }
   };
 
   return (
-    <div className="gradient-bg">
-      <div style={{ padding: "20px 40px", background: "white", borderBottom: "3px solid #667eea", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-          <div style={{ width: "60px", height: "60px", background: "#667eea", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold", fontSize: "24px" }}>
+    <div style={{
+      minHeight: "100vh",
+      background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%)",
+      display: "flex",
+      flexDirection: "column"
+    }}>
+      {/* Header */}
+      <header style={{
+        padding: "20px 40px",
+        background: "rgba(255,255,255,0.95)",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.1)"
+      }}>
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "16px", textDecoration: "none" }}>
+          <div style={{
+            width: "60px",
+            height: "60px",
+            background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+            borderRadius: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: "20px",
+            boxShadow: "0 4px 12px rgba(30, 58, 138, 0.3)"
+          }}>
             SRIT
           </div>
-          <h1 style={{ fontSize: "20px", fontWeight: "bold", color: "#333", margin: 0 }}>
-            Srinivasa Ramanujan Institute of Technology
-          </h1>
-        </div>
-      </div>
+          <div>
+            <h1 style={{ fontSize: "18px", fontWeight: "700", color: "#1e3a8a", margin: 0 }}>
+              Srinivasa Ramanujan Institute of Technology
+            </h1>
+            <p style={{ fontSize: "12px", color: "#6b7280", margin: "4px 0 0 0" }}>
+              College Portal
+            </p>
+          </div>
+        </Link>
+      </header>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 140px)", padding: "40px 20px" }}>
-        <div className="portal-card">
-          <h2 style={{ fontSize: "28px", fontWeight: "bold", textAlign: "center", marginBottom: "10px", color: "#333" }}>
-            College Portal Login
-          </h2>
-          <p style={{ fontSize: "14px", color: "#666", textAlign: "center", marginBottom: "30px" }}>
-            Enter your credentials to access the portal
-          </p>
+      {/* Login Form */}
+      <div style={{
+        flex: 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 20px"
+      }}>
+        <div style={{
+          background: "white",
+          borderRadius: "24px",
+          boxShadow: "0 25px 80px rgba(0,0,0,0.25)",
+          padding: "48px",
+          width: "100%",
+          maxWidth: "440px"
+        }}>
+          {/* Logo in card */}
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <div style={{
+              width: "80px",
+              height: "80px",
+              background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+              borderRadius: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 20px",
+              boxShadow: "0 8px 24px rgba(30, 58, 138, 0.3)"
+            }}>
+              <span style={{ fontSize: "28px" }}>🔐</span>
+            </div>
+            <h2 style={{
+              fontSize: "28px",
+              fontWeight: "700",
+              color: "#1f2937",
+              marginBottom: "8px"
+            }}>
+              Welcome Back
+            </h2>
+            <p style={{ fontSize: "15px", color: "#6b7280" }}>
+              Sign in to access your portal
+            </p>
+          </div>
 
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: "20px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "600", color: "#333" }}>
+            {/* Email Field */}
+            <div style={{ marginBottom: "24px" }}>
+              <label style={{
+                display: "block",
+                marginBottom: "10px",
+                fontSize: "14px",
+                fontWeight: "600",
+                color: "#374151"
+              }}>
                 Email Address
               </label>
-              <input
-                type="email"
-                className="form-input"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <span style={{
+                  position: "absolute",
+                  left: "16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: "18px"
+                }}>
+                  📧
+                </span>
+                <input
+                  type="email"
+                  className="form-input"
+                  style={{ paddingLeft: "48px" }}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
-            <div style={{ marginBottom: "25px" }}>
-              <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "600", color: "#333" }}>
+            {/* Password Field */}
+            <div style={{ marginBottom: "32px" }}>
+              <label style={{
+                display: "block",
+                marginBottom: "10px",
+                fontSize: "14px",
+                fontWeight: "600",
+                color: "#374151"
+              }}>
                 Password
               </label>
-              <input
-                type="password"
-                className="form-input"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <span style={{
+                  position: "absolute",
+                  left: "16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  fontSize: "18px"
+                }}>
+                  🔒
+                </span>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-input"
+                  style={{ paddingLeft: "48px", paddingRight: "48px" }}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "18px"
+                  }}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               className="btn-primary"
-              style={{ width: "100%" }}
+              style={{
+                width: "100%",
+                padding: "16px",
+                fontSize: "17px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px"
+              }}
               disabled={loading}
             >
-              {loading ? "Logging in..." : "LOGIN"}
+              {loading ? (
+                <>
+                  <span style={{
+                    width: "20px",
+                    height: "20px",
+                    border: "2px solid rgba(255,255,255,0.3)",
+                    borderTop: "2px solid white",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite"
+                  }} />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <span>→</span>
+                </>
+              )}
             </button>
 
-            {error && <div className="error-text">{error}</div>}
+            {/* Error Message */}
+            {error && (
+              <div style={{
+                marginTop: "20px",
+                padding: "14px 18px",
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: "10px",
+                color: "#dc2626",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px"
+              }}>
+                <span>⚠️</span>
+                {error}
+              </div>
+            )}
           </form>
+
+          {/* Help Text */}
+          <div style={{
+            marginTop: "32px",
+            padding: "20px",
+            background: "#f8fafc",
+            borderRadius: "12px",
+            textAlign: "center"
+          }}>
+            <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "12px" }}>
+              Need help? Contact the administrator
+            </p>
+            <p style={{ fontSize: "13px", color: "#3b82f6" }}>
+              📧 support@srit.ac.in
+            </p>
+          </div>
+
+          {/* Back to Home */}
+          <div style={{ textAlign: "center", marginTop: "24px" }}>
+            <Link href="/" style={{
+              color: "#6b7280",
+              textDecoration: "none",
+              fontSize: "14px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px"
+            }}>
+              ← Back to Homepage
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div style={{ textAlign: "center", padding: "20px", color: "white", fontSize: "14px" }}>
+      {/* Footer */}
+      <footer style={{
+        textAlign: "center",
+        padding: "20px",
+        color: "rgba(255,255,255,0.7)",
+        fontSize: "13px"
+      }}>
         © 2026 Srinivasa Ramanujan Institute of Technology. All rights reserved.
-      </div>
+      </footer>
+
+      {/* Spinner Animation */}
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
