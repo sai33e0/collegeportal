@@ -1,7 +1,25 @@
-export const API_BASE_URL = "http://localhost:5000";
+export const API_BASE_URL = "http://localhost:3001";
 
 export const API_ENDPOINTS = {
+  // Auth
   LOGIN: "/auth/login",
+  
+  // Admin
+  ADMIN_DASHBOARD: "/admin/dashboard",
+  ADMIN_USERS: "/admin/users",
+  
+  // Student
+  STUDENT_DASHBOARD: "/student/dashboard",
+  STUDENT_ATTENDANCE: "/student-attendance",
+  STUDENT_MARKS: "/student/marks",
+  
+  // Faculty
+  FACULTY_DASHBOARD: "/faculty/dashboard",
+  FACULTY_ATTENDANCE: "/attendance",
+  FACULTY_MARKS: "/marks",
+  
+  // Health
+  HEALTH_CHECK: "/health",
 };
 
 export const ROLE_IDS = {

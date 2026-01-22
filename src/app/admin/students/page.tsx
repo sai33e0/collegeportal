@@ -10,9 +10,10 @@ import { getToken } from "@/lib/auth";
 interface Student {
   id: number;
   roll_no: string;
-  semester: number;
-  year_of_admission: number;
   user_id: string;
+  department_id?: number;
+  semester?: number;
+  year_of_admission?: number;
   users?: { full_name: string };
   departments?: { name: string; code: string };
 }
@@ -37,22 +38,27 @@ export default function AdminStudentsPage() {
     password: "",
     full_name: "",
     roll_no: "",
-    dept_id: "",
-    semester: "1",
+    department_id: "",
+    semester: "6",
     year_of_admission: new Date().getFullYear().toString()
   });
 
   const fetchData = useCallback(async () => {
     try {
       const token = getToken();
-      const headers = {
+      const adminHeaders = {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       };
 
+      // Departments endpoint is public (no auth needed)
+      const publicHeaders = {
+        "Content-Type": "application/json"
+      };
+
       const [studentsRes, deptsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/admin/students`, { headers }),
-        fetch(`${API_BASE_URL}/admin/departments`, { headers })
+        fetch(`${API_BASE_URL}/admin/students`, { headers: adminHeaders }),
+        fetch(`${API_BASE_URL}/admin/departments`, { headers: publicHeaders })
       ]);
 
       if (studentsRes.ok) {
@@ -62,11 +68,16 @@ export default function AdminStudentsPage() {
 
       if (deptsRes.ok) {
         const data = await deptsRes.json();
+        console.log('Departments fetched:', data);
         setDepartments(data.departments || []);
+      } else {
+        const errData = await deptsRes.json();
+        console.error('Departments error:', deptsRes.status, errData);
       }
 
       setLoading(false);
-    } catch {
+    } catch (err) {
+      console.error("Fetch error:", err);
       setError("Failed to fetch data");
       setLoading(false);
     }
@@ -92,7 +103,7 @@ export default function AdminStudentsPage() {
       const body = editingId
         ? {
             roll_no: formData.roll_no,
-            dept_id: parseInt(formData.dept_id),
+            department_id: parseInt(formData.department_id),
             semester: parseInt(formData.semester),
             full_name: formData.full_name
           }
@@ -101,7 +112,7 @@ export default function AdminStudentsPage() {
             password: formData.password,
             full_name: formData.full_name,
             roll_no: formData.roll_no,
-            dept_id: parseInt(formData.dept_id),
+            department_id: parseInt(formData.department_id),
             semester: parseInt(formData.semester),
             year_of_admission: parseInt(formData.year_of_admission)
           };
@@ -156,9 +167,10 @@ export default function AdminStudentsPage() {
       password: "",
       full_name: student.users?.full_name || "",
       roll_no: student.roll_no,
-      dept_id: student.departments ? departments.find(d => d.code === student.departments?.code)?.id.toString() || "" : "",
-      semester: student.semester.toString(),
-      year_of_admission: student.year_of_admission.toString()
+      dept_id: student.departments
+        ? (departments.find(d => d.code === student.departments?.code)?.id?.toString() || "")
+        : (student.department_id ? student.department_id.toString() : ""),
+      year_of_admission: ((student.year_of_admission ?? new Date().getFullYear())).toString()
     });
     setShowForm(true);
   };
@@ -172,7 +184,6 @@ export default function AdminStudentsPage() {
       full_name: "",
       roll_no: "",
       dept_id: "",
-      semester: "1",
       year_of_admission: new Date().getFullYear().toString()
     });
   };
@@ -350,8 +361,8 @@ export default function AdminStudentsPage() {
                       Department *
                     </label>
                     <select
-                      value={formData.dept_id}
-                      onChange={(e) => setFormData({ ...formData, dept_id: e.target.value })}
+                      value={formData.department_id}
+                      onChange={(e) => setFormData({ ...formData, department_id: e.target.value })}
                       required
                       className="form-input"
                     >
@@ -364,15 +375,16 @@ export default function AdminStudentsPage() {
 
                   <div>
                     <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151", fontSize: "14px" }}>
-                      Semester
+                      Semester *
                     </label>
                     <select
                       value={formData.semester}
                       onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
+                      required
                       className="form-input"
                     >
-                      {[1, 2, 3, 4, 5, 6, 7, 8].map(s => (
-                        <option key={s} value={s}>Semester {s}</option>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
+                        <option key={sem} value={sem}>Semester {sem}</option>
                       ))}
                     </select>
                   </div>
@@ -431,7 +443,7 @@ export default function AdminStudentsPage() {
                       <th style={{ padding: "16px 20px", textAlign: "left", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Roll No</th>
                       <th style={{ padding: "16px 20px", textAlign: "left", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Name</th>
                       <th style={{ padding: "16px 20px", textAlign: "left", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Department</th>
-                      <th style={{ padding: "16px 20px", textAlign: "center", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Semester</th>
+                      <th style={{ padding: "16px 20px", textAlign: "left", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Semester</th>
                       <th style={{ padding: "16px 20px", textAlign: "center", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Year</th>
                       <th style={{ padding: "16px 20px", textAlign: "center", fontWeight: "600", color: "#374151", fontSize: "13px", textTransform: "uppercase" }}>Actions</th>
                     </tr>
@@ -457,11 +469,11 @@ export default function AdminStudentsPage() {
                             {student.departments?.code || "N/A"}
                           </span>
                         </td>
-                        <td style={{ padding: "16px 20px", textAlign: "center", color: "#4b5563" }}>
-                          {student.semester}
+                        <td style={{ padding: "16px 20px", textAlign: "center", color: "#6b7280" }}>
+                          Sem {student.semester ?? "-"}
                         </td>
                         <td style={{ padding: "16px 20px", textAlign: "center", color: "#6b7280" }}>
-                          {student.year_of_admission}
+                          {student.year_of_admission ?? "-"}
                         </td>
                         <td style={{ padding: "16px 20px", textAlign: "center" }}>
                           <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>

@@ -2,6 +2,7 @@
 
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
+import CSVImport from "@/components/CSVImport";
 import Link from "next/link";
 import { ROLE_IDS } from "@/lib/constants";
 
@@ -17,8 +18,8 @@ export default function AdminDashboard() {
     { title: "Manage Students", icon: "🎓", description: "Add, edit, or remove students", href: "/admin/students", color: "#3b82f6" },
     { title: "Manage Faculty", icon: "👨‍🏫", description: "Add, edit, or remove faculty", href: "/admin/faculty", color: "#10b981" },
     { title: "Manage Marks", icon: "📝", description: "Enter and update student marks", href: "/admin/marks", color: "#8b5cf6" },
-    { title: "Subjects", icon: "📖", description: "Configure subjects", href: "#", color: "#f59e0b" },
-    { title: "Reports", icon: "📊", description: "View analytics and reports", href: "#", color: "#ef4444" },
+    { title: "Manage Subjects", icon: "📖", description: "Configure subjects by semester", href: "/admin/subjects", color: "#f59e0b" },
+    { title: "Assign Faculty", icon: "👨‍🏫📚", description: "Assign faculty to subjects", href: "/admin/faculty-subjects", color: "#ec4899" },
     { title: "Settings", icon: "⚙️", description: "System configuration", href: "#", color: "#6b7280" }
   ];
 
@@ -37,12 +38,12 @@ export default function AdminDashboard() {
         <main style={{ maxWidth: "1400px", margin: "0 auto", padding: "32px 24px" }}>
           {/* Welcome Section */}
           <div style={{
-            background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
             borderRadius: "20px",
             padding: "40px",
             marginBottom: "32px",
             color: "white",
-            boxShadow: "0 10px 40px rgba(30, 58, 138, 0.3)"
+            boxShadow: "0 10px 40px rgba(255, 107, 53, 0.3)"
           }}>
             <h1 style={{ fontSize: "32px", fontWeight: "700", marginBottom: "8px" }}>
               Welcome, Administrator! 👋
@@ -53,7 +54,7 @@ export default function AdminDashboard() {
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link href="/admin/marks" style={{
                 background: "white",
-                color: "#1e3a8a",
+                color: "#ff6b35",
                 padding: "12px 24px",
                 borderRadius: "10px",
                 textDecoration: "none",
@@ -181,6 +182,9 @@ export default function AdminDashboard() {
                 ))}
               </div>
             </div>
+
+            {/* CSV Import Section */}
+            <CSVImport />
 
             {/* Recent Activity */}
             <div>

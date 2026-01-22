@@ -8,12 +8,19 @@ import adminRoutes from './routes/admin.js';
 import studentRoutes from './routes/student.js';
 import facultyRoutes from './routes/faculty.js';
 import marksRoutes from './routes/marks.js';
+import attendanceRoutes from './routes/facultyattendence.js';
+import studentAttendanceRoutes from './routes/studentattendence.js';
+import academicRoutes from './routes/academic.js';
+import feesRoutes from './routes/fees.js';
+import csvImportRoutes from './routes/csv-import.js';
+
+
 
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true
 }));
 
@@ -38,9 +45,14 @@ app.get('/health', (req, res) => {
 // API Routes
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
+app.use('/csv-import', csvImportRoutes);
 app.use('/student', studentRoutes);
 app.use('/faculty', facultyRoutes);
 app.use('/marks', marksRoutes);
+app.use('/attendance', attendanceRoutes);
+app.use('/student-attendance', studentAttendanceRoutes);
+app.use('/academic', academicRoutes);
+app.use('/fees', feesRoutes);
 
 // 404 handler
 app.use((req, res) => {
