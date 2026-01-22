@@ -16,7 +16,7 @@ export default function Navbar() {
     }}>
       {/* Top Bar */}
       <div style={{
-        background: "#1e3a8a",
+        background: "#ff6b35",
         color: "white",
         padding: "8px 0",
         fontSize: "13px"
@@ -65,7 +65,7 @@ export default function Navbar() {
           <div style={{
             width: "70px",
             height: "70px",
-            background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
             borderRadius: "12px",
             display: "flex",
             alignItems: "center",
@@ -73,7 +73,7 @@ export default function Navbar() {
             color: "white",
             fontWeight: "bold",
             fontSize: "20px",
-            boxShadow: "0 4px 12px rgba(30, 58, 138, 0.3)"
+            boxShadow: "0 4px 12px rgba(255, 107, 53, 0.3)"
           }}>
             SRIT
           </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
               margin: 0,
               fontSize: "20px",
               fontWeight: "700",
-              color: "#1e3a8a",
+              color: "#ff6b35",
               lineHeight: 1.2
             }}>
               Srinivasa Ramanujan Institute of Technology
@@ -105,14 +105,14 @@ export default function Navbar() {
           <Link href="#facilities" className="nav-link">Facilities</Link>
           <Link href="#contact" className="nav-link">Contact</Link>
           <Link href="/auth/login" style={{
-            background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)",
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
             color: "white",
             padding: "12px 24px",
             borderRadius: "10px",
             textDecoration: "none",
             fontWeight: "600",
             marginLeft: "16px",
-            boxShadow: "0 4px 12px rgba(30, 58, 138, 0.3)",
+            boxShadow: "0 4px 12px rgba(255, 107, 53, 0.3)",
             transition: "all 0.3s ease"
           }}>
             Portal Login

@@ -35,6 +35,7 @@ interface Subject {
   id: number;
   name: string;
   code: string;
+  semester?: number;
 }
 
 interface UserData {
@@ -50,6 +51,7 @@ export default function AdminMarksPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("1");
 
   // Form state
   const [showAddForm, setShowAddForm] = useState(false);
@@ -348,6 +350,35 @@ export default function AdminMarksPage() {
               <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#1f2937", marginBottom: "24px" }}>
                 {editingId ? "✏️ Edit Marks" : "➕ Add New Marks"}
               </h3>
+
+              {/* Semester Filter */}
+              <div style={{ marginBottom: "24px", padding: "16px", background: "#f0f9ff", borderRadius: "12px", borderLeft: "4px solid #0284c7" }}>
+                <label style={{ display: "block", marginBottom: "12px", fontWeight: "600", color: "#0c4a6e", fontSize: "14px" }}>
+                  📚 Filter by Semester
+                </label>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))", gap: "8px" }}>
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
+                    <button
+                      key={sem}
+                      type="button"
+                      onClick={() => setSelectedSemester(String(sem))}
+                      style={{
+                        padding: "10px 16px",
+                        borderRadius: "8px",
+                        border: selectedSemester === String(sem) ? "2px solid #0284c7" : "1px solid #cbd5e1",
+                        background: selectedSemester === String(sem) ? "#0284c7" : "white",
+                        color: selectedSemester === String(sem) ? "white" : "#1f2937",
+                        fontWeight: selectedSemester === String(sem) ? "600" : "500",
+                        cursor: "pointer",
+                        fontSize: "13px"
+                      }}
+                    >
+                      Sem {sem}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit}>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "24px", marginBottom: "24px" }}>
                   <div>
@@ -380,7 +411,7 @@ export default function AdminMarksPage() {
                       className="form-input"
                     >
                       <option value="">Select Subject</option>
-                      {subjects.map(s => (
+                      {subjects.filter(s => s.semester === parseInt(selectedSemester)).map(s => (
                         <option key={s.id} value={s.id}>
                           {s.code} - {s.name}
                         </option>

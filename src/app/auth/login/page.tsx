@@ -4,8 +4,8 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAuthenticated, getRoleId, getRoleRoute, setAuthData } from "@/lib/auth";
-
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+import { apiClient } from "@/lib/api";
+import { API_ENDPOINTS } from "@/lib/constants";
 
 interface LoginResponse {
   access_token: string;
@@ -47,40 +47,29 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      if (response.ok) {
-        const data: LoginResponse = await response.json();
-        setAuthData(data.access_token, data.role_id);
-        // Store user name if available
-        if (data.user?.full_name) {
-          localStorage.setItem("user_name", data.user.full_name);
-        }
-        const route = getRoleRoute(data.role_id);
-        router.push(route);
-      } else {
-        setLoading(false);
-        setError("Invalid email or password. Please try again.");
+      const data: LoginResponse = await apiClient.post(
+        API_ENDPOINTS.LOGIN,
+        { email, password }
+      );
+      
+      setAuthData(data.access_token, data.role_id);
+      // Store user name if available
+      if (data.user?.full_name) {
+        localStorage.setItem("user_name", data.user.full_name);
       }
-    } catch {
+      const route = getRoleRoute(data.role_id);
+      router.push(route);
+    } catch (err) {
       setLoading(false);
-      setError("Unable to connect to server. Please try again.");
+      const errorMessage = err instanceof Error ? err.message : "Unable to connect to server. Please try again.";
+      setError(errorMessage || "Invalid email or password. Please try again.");
     }
   };
 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%)",
+      background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 50%, #ff8c42 100%)",
       display: "flex",
       flexDirection: "column"
     }}>
@@ -94,7 +83,7 @@ export default function LoginPage() {
           <div style={{
             width: "60px",
             height: "60px",
-            background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
             borderRadius: "12px",
             display: "flex",
             alignItems: "center",
@@ -102,12 +91,12 @@ export default function LoginPage() {
             color: "white",
             fontWeight: "bold",
             fontSize: "20px",
-            boxShadow: "0 4px 12px rgba(30, 58, 138, 0.3)"
+            boxShadow: "0 4px 12px rgba(255, 107, 53, 0.3)"
           }}>
             SRIT
           </div>
           <div>
-            <h1 style={{ fontSize: "18px", fontWeight: "700", color: "#1e3a8a", margin: 0 }}>
+            <h1 style={{ fontSize: "18px", fontWeight: "700", color: "#ff6b35", margin: 0 }}>
               Srinivasa Ramanujan Institute of Technology
             </h1>
             <p style={{ fontSize: "12px", color: "#6b7280", margin: "4px 0 0 0" }}>
@@ -138,20 +127,20 @@ export default function LoginPage() {
             <div style={{
               width: "80px",
               height: "80px",
-              background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
-              borderRadius: "20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 20px",
-              boxShadow: "0 8px 24px rgba(30, 58, 138, 0.3)"
-            }}>
-              <span style={{ fontSize: "28px" }}>🔐</span>
-            </div>
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
+            borderRadius: "20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0 auto 20px",
+            boxShadow: "0 8px 24px rgba(255, 107, 53, 0.3)"
+          }}>
+            <span style={{ fontSize: "28px" }}>🔐</span>
+          </div>
             <h2 style={{
               fontSize: "28px",
               fontWeight: "700",
-              color: "#1f2937",
+              color: "#ff6b35",
               marginBottom: "8px"
             }}>
               Welcome Back
@@ -297,6 +286,28 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
+
+            {/* Demo Credentials */}
+            <div style={{
+              marginTop: "20px",
+              padding: "14px",
+              background: "#f0f9ff",
+              border: "1px solid #bfdbfe",
+              borderRadius: "10px",
+              fontSize: "12px",
+              color: "#0c4a6e"
+            }}>
+              <p style={{ margin: "0 0 8px 0", fontWeight: "600" }}>📋 Demo Credentials:</p>
+              <div style={{ margin: "6px 0", fontFamily: "monospace" }}>
+                <strong>Admin:</strong> admin@srit.com / srit1234
+              </div>
+              <div style={{ margin: "6px 0", fontFamily: "monospace" }}>
+                <strong>Faculty:</strong> faculty1@srit.com / srit1234
+              </div>
+              <div style={{ margin: "6px 0", fontFamily: "monospace" }}>
+                <strong>Student:</strong> 234g1a33i0@srit.ac.in / srit1234
+              </div>
+            </div>
           </form>
 
           {/* Help Text */}

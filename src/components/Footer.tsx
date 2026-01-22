@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#111827", color: "white" }}>
+    <footer style={{ background: "#0a0a0a", color: "white" }}>
       {/* Main Footer */}
       <div style={{
         maxWidth: "1400px",
@@ -20,7 +20,7 @@ export default function Footer() {
             <div style={{
               width: "50px",
               height: "50px",
-              background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+              background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
               borderRadius: "10px",
               display: "flex",
               alignItems: "center",
@@ -67,7 +67,7 @@ export default function Footer() {
             fontWeight: "600", 
             marginBottom: "24px",
             paddingBottom: "12px",
-            borderBottom: "2px solid #3b82f6",
+            borderBottom: "2px solid #ff6b35",
             display: "inline-block"
           }}>
             Quick Links

@@ -10,28 +10,7 @@ import Footer from "@/components/Footer";
 export default function HomePage() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const heroSlides = [
-    {
-      title: "Welcome to SRIT",
-      subtitle: "Empowering Future Engineers",
-      description: "A premier institution committed to excellence in education, research, and innovation.",
-      image: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)"
-    },
-    {
-      title: "World-Class Education",
-      subtitle: "Learn from the Best",
-      description: "Expert faculty, modern infrastructure, and industry-aligned curriculum.",
-      image: "linear-gradient(135deg, #065f46 0%, #10b981 100%)"
-    },
-    {
-      title: "Shape Your Future",
-      subtitle: "Excellence in Engineering",
-      description: "Join thousands of successful alumni making a difference worldwide.",
-      image: "linear-gradient(135deg, #7c2d12 0%, #f59e0b 100%)"
-    }
-  ];
+  const campusVideo = "/WhatsApp Video 2026-01-22 at 10.13.41 PM.mp4";
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -41,13 +20,6 @@ export default function HomePage() {
       }
     }
   }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [heroSlides.length]);
 
   const handleLoginClick = () => {
     if (isLoggedIn) {
@@ -64,8 +36,28 @@ export default function HomePage() {
   const stats = [
     { number: "5000+", label: "Students" },
     { number: "200+", label: "Faculty" },
-    { number: "50+", label: "Courses" },
+    { number: "50+", label: "Programs" },
     { number: "95%", label: "Placement Rate" }
+  ];
+
+  const rankings = [
+    { region: "India", title: "Top 100 Engineering", badge: "NAAC Accredited", accent: "#ffd166" },
+    { region: "Asia", title: "Emerging Institutions 150", badge: "Research & Innovation", accent: "#7ae582" },
+    { region: "Global", title: "Recognized for Innovation", badge: "Industry Partnerships", accent: "#6ba4ff" }
+  ];
+
+  const focusAreas = [
+    { title: "AI & Data", description: "Applied AI labs, analytics sandboxes, and interdisciplinary projects.", icon: "🤖" },
+    { title: "Sustainability", description: "Energy, water, and smart city pilots across the campus.", icon: "🌿" },
+    { title: "Innovation & Incubation", description: "Incubation center, startup mentoring, and patent support.", icon: "🚀" },
+    { title: "Global Connect", description: "Collaborations, exchange programs, and international immersion.", icon: "🌏" }
+  ];
+
+  const exploreCampus = [
+    { title: "Learning Resource Center", description: "Digital libraries, maker spaces, and silent study zones.", tag: "Open late" },
+    { title: "Innovation Hub", description: "Prototyping labs, AR/VR suites, and hackathon pods.", tag: "Build" },
+    { title: "Sports & Wellness", description: "Indoor arenas, outdoor tracks, and wellness studios.", tag: "Compete" },
+    { title: "Student Life", description: "Cultural fests, clubs, leadership circles, and community impact.", tag: "Lead" }
   ];
 
   const departments = [
@@ -80,10 +72,10 @@ export default function HomePage() {
   const quickLinks = [
     { title: "Student Portal", icon: "🎓", description: "Access your academic information", href: "/auth/login" },
     { title: "Faculty Portal", icon: "👨‍🏫", description: "Manage classes and grades", href: "/auth/login" },
-    { title: "Examinations", icon: "📝", description: "View exam schedules and results", href: "/auth/login" },
-    { title: "Library", icon: "📚", description: "Digital library resources", href: "#" },
-    { title: "Placements", icon: "💼", description: "Career opportunities", href: "#" },
-    { title: "Events", icon: "📅", description: "Campus events and activities", href: "#" }
+    { title: "Examinations", icon: "📝", description: "Schedules and results", href: "/auth/login" },
+    { title: "Library", icon: "📚", description: "Digital resources", href: "#" },
+    { title: "Placements", icon: "💼", description: "Career support", href: "#" },
+    { title: "Events", icon: "📅", description: "Campus calendar", href: "#" }
   ];
 
   const announcements = [
@@ -94,7 +86,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div className="page-root">
       <Navbar />
 
       {/* News Ticker */}
@@ -119,356 +111,202 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Hero Section with Slider */}
-      <section style={{
-        background: heroSlides[currentSlide].image,
-        padding: "100px 24px",
-        position: "relative",
-        transition: "background 0.5s ease-in-out",
-        minHeight: "500px",
-        display: "flex",
-        alignItems: "center"
-      }}>
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "rgba(0,0,0,0.3)"
-        }} />
-        <div style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 1,
-          color: "white",
-          width: "100%"
-        }}>
-          <p style={{
-            fontSize: "18px",
-            fontWeight: "500",
-            marginBottom: "12px",
-            opacity: 0.9,
-            textTransform: "uppercase",
-            letterSpacing: "2px"
-          }}>
-            {heroSlides[currentSlide].subtitle}
+      {/* Hero Section with video background */}
+      <section className="hero">
+        <div className="hero-video-wrapper">
+          <video className="hero-video" src={campusVideo} autoPlay loop muted playsInline poster="/fallback-poster.jpg" />
+        </div>
+        <div className="hero-overlay" />
+        <div className="hero-content">
+          <div className="pill">Future-ready Campus</div>
+          <h1 className="hero-title">Engineering education that blends research, industry, and impact.</h1>
+          <p className="hero-subtitle">
+            SRIT brings together rigorous academics, modern infrastructure, and immersive campus life so students can build, experiment, and lead.
           </p>
-          <h1 style={{
-            fontSize: "56px",
-            fontWeight: "800",
-            marginBottom: "24px",
-            lineHeight: 1.1,
-            textShadow: "2px 2px 4px rgba(0,0,0,0.3)"
-          }}>
-            {heroSlides[currentSlide].title}
-          </h1>
-          <p style={{
-            fontSize: "20px",
-            marginBottom: "40px",
-            maxWidth: "600px",
-            lineHeight: 1.6,
-            opacity: 0.95
-          }}>
-            {heroSlides[currentSlide].description}
-          </p>
-          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            <button
-              onClick={handleLoginClick}
-              style={{
-                background: "white",
-                color: "#1e3a8a",
-                border: "none",
-                padding: "16px 36px",
-                borderRadius: "12px",
-                fontSize: "17px",
-                fontWeight: "700",
-                cursor: "pointer",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-                transition: "all 0.3s ease"
-              }}
-            >
-              {isLoggedIn ? "Go to Dashboard →" : "Access Portal →"}
+          <div className="hero-actions">
+            <button className="btn-primary" onClick={handleLoginClick}>
+              {isLoggedIn ? "Go to Dashboard" : "Access Portal"}
             </button>
-            <Link href="#about" style={{
-              background: "transparent",
-              color: "white",
-              border: "2px solid white",
-              padding: "16px 36px",
-              borderRadius: "12px",
-              fontSize: "17px",
-              fontWeight: "600",
-              textDecoration: "none",
-              transition: "all 0.3s ease"
-            }}>
-              Explore More
-            </Link>
+            <Link href="#focus" className="btn-ghost">Experience the campus</Link>
           </div>
-
-          {/* Slider Dots */}
-          <div style={{ display: "flex", gap: "12px", marginTop: "48px" }}>
-            {heroSlides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                style={{
-                  width: idx === currentSlide ? "32px" : "12px",
-                  height: "12px",
-                  borderRadius: "6px",
-                  border: "none",
-                  background: idx === currentSlide ? "white" : "rgba(255,255,255,0.4)",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease"
-                }}
-              />
-            ))}
+          <div className="hero-meta">
+            <div className="meta-badge">AICTE Approved</div>
+            <div className="meta-badge">JNTUA Affiliated</div>
+            <div className="meta-badge">NAAC Accredited</div>
+          </div>
+        </div>
+        <div className="hero-sidecard">
+          <div className="glass-card">
+            <p className="card-kicker">At a glance</p>
+            <div className="card-grid">
+              {stats.map((stat, idx) => (
+                <div key={idx} className="card-stat">
+                  <div className="stat-number">{stat.number}</div>
+                  <div className="stat-label">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+            <div className="card-foot">
+              <span>Access academics, marks, attendance, and placements in one portal.</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Statistics Section */}
-      <section style={{
-        background: "white",
-        marginTop: "-60px",
-        marginLeft: "auto",
-        marginRight: "auto",
-        maxWidth: "1200px",
-        borderRadius: "20px",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.1)",
-        position: "relative",
-        zIndex: 2
-      }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          padding: "40px"
-        }}>
-          {stats.map((stat, idx) => (
-            <div key={idx} className="stats-item" style={{
-              borderRight: idx < stats.length - 1 ? "1px solid #e5e7eb" : "none"
-            }}>
-              <div className="stats-number">{stat.number}</div>
-              <div className="stats-label">{stat.label}</div>
+      {/* Rankings */}
+      <section className="section-shell rank-section">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">Rankings & Recognition</p>
+            <h2 className="section-title">Credible, consistent performance</h2>
+            <p className="section-subtitle">Independent surveys place SRIT among the leading engineering institutions with strong research and industry outcomes.</p>
+          </div>
+          <div className="badge-inline">Industry-driven curriculum • Outcome-based learning</div>
+        </div>
+        <div className="rank-grid">
+          {rankings.map((rank) => (
+            <div key={rank.region} className="rank-card" style={{ borderColor: rank.accent }}>
+              <div className="rank-pill" style={{ color: rank.accent }}>{rank.region}</div>
+              <h3>{rank.title}</h3>
+              <p>{rank.badge}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Focus Areas */}
+      <section id="focus" className="section-shell focus-section">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">Academic + Industry</p>
+            <h2 className="section-title">Where we invest focus</h2>
+            <p className="section-subtitle">Labs, faculty, and curriculum aligned to the technologies and impact areas shaping tomorrow.</p>
+          </div>
+          <Link href="#departments" className="btn-ghost">Browse departments</Link>
+        </div>
+        <div className="focus-grid">
+          {focusAreas.map((item) => (
+            <div key={item.title} className="focus-card">
+              <div className="focus-icon">{item.icon}</div>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Quick Links Section */}
-      <section style={{ padding: "80px 24px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 className="section-title">Quick Access</h2>
-          <p className="section-subtitle">Everything you need at your fingertips</p>
-          
-          <div className="quick-links-grid">
-            {quickLinks.map((link, idx) => (
-              <Link href={link.href} key={idx} className="quick-link-item">
-                <div className="quick-link-icon">{link.icon}</div>
-                <span className="quick-link-text">{link.title}</span>
-                <span style={{ fontSize: "13px", color: "#6b7280", textAlign: "center", marginTop: "8px" }}>
-                  {link.description}
-                </span>
-              </Link>
-            ))}
+      <section className="section-shell">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">Portals</p>
+            <h2 className="section-title">Quick Access</h2>
+            <p className="section-subtitle">Jump into the services you need right now.</p>
           </div>
+        </div>
+        <div className="quick-links-grid">
+          {quickLinks.map((link, idx) => (
+            <Link href={link.href} key={idx} className="quick-link-item">
+              <div className="quick-link-icon">{link.icon}</div>
+              <span className="quick-link-text">{link.title}</span>
+              <span className="quick-link-desc">{link.description}</span>
+            </Link>
+          ))}
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" style={{ background: "#1e3a8a", padding: "80px 24px", color: "white" }}>
-        <div style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "60px",
-          alignItems: "center"
-        }}>
+      <section id="about" className="section-shell about-section">
+        <div className="split-grid">
           <div>
-            <h2 style={{ fontSize: "40px", fontWeight: "700", marginBottom: "24px" }}>
-              About SRIT
-            </h2>
-            <p style={{ fontSize: "18px", lineHeight: 1.8, opacity: 0.9, marginBottom: "24px" }}>
-              Srinivasa Ramanujan Institute of Technology is a premier engineering institution 
-              dedicated to nurturing future leaders in technology and innovation. Established 
-              with a vision to provide world-class education, we have consistently maintained 
-              high academic standards.
+            <p className="eyebrow">About SRIT</p>
+            <h2 className="section-title">Built for learners who want to build things</h2>
+            <p className="section-subtitle">
+              Srinivasa Ramanujan Institute of Technology nurtures future technologists through rigorous academics, applied research, and an environment that rewards curiosity.
             </p>
-            <p style={{ fontSize: "18px", lineHeight: 1.8, opacity: 0.9, marginBottom: "32px" }}>
-              Our state-of-the-art infrastructure, experienced faculty, and industry partnerships 
-              ensure that our students are well-prepared for successful careers.
-            </p>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <div style={{
-                background: "rgba(255,255,255,0.1)",
-                padding: "16px 24px",
-                borderRadius: "10px"
-              }}>
-                <div style={{ fontSize: "24px", fontWeight: "700" }}>AICTE</div>
-                <div style={{ fontSize: "13px", opacity: 0.8 }}>Approved</div>
-              </div>
-              <div style={{
-                background: "rgba(255,255,255,0.1)",
-                padding: "16px 24px",
-                borderRadius: "10px"
-              }}>
-                <div style={{ fontSize: "24px", fontWeight: "700" }}>JNTUA</div>
-                <div style={{ fontSize: "13px", opacity: 0.8 }}>Affiliated</div>
-              </div>
-              <div style={{
-                background: "rgba(255,255,255,0.1)",
-                padding: "16px 24px",
-                borderRadius: "10px"
-              }}>
-                <div style={{ fontSize: "24px", fontWeight: "700" }}>NAAC</div>
-                <div style={{ fontSize: "13px", opacity: 0.8 }}>Accredited</div>
-              </div>
+            <div className="badge-row">
+              <div className="meta-badge">Outcome-based curriculum</div>
+              <div className="meta-badge">Industry mentors</div>
+              <div className="meta-badge">Research-driven projects</div>
             </div>
           </div>
-          <div style={{
-            background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
-            borderRadius: "20px",
-            padding: "40px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px"
-          }}>
-            <h3 style={{ fontSize: "24px", fontWeight: "600", marginBottom: "8px" }}>Our Mission</h3>
-            <p style={{ fontSize: "16px", lineHeight: 1.8, opacity: 0.9 }}>
-              To develop competent professionals with strong ethical values, equipped with 
-              the knowledge and skills to meet the challenges of a rapidly evolving technological world.
-            </p>
-            <h3 style={{ fontSize: "24px", fontWeight: "600", marginBottom: "8px", marginTop: "16px" }}>Our Vision</h3>
-            <p style={{ fontSize: "16px", lineHeight: 1.8, opacity: 0.9 }}>
-              To be a globally recognized institution of excellence in engineering education, 
-              research, and innovation, producing leaders who contribute to society.
-            </p>
+          <div className="glass-card about-card">
+            <div>
+              <h3>Mission</h3>
+              <p>Develop competent professionals with strong ethics and real-world readiness.</p>
+            </div>
+            <div>
+              <h3>Vision</h3>
+              <p>Be a recognized institution of excellence in engineering education, research, and innovation.</p>
+            </div>
+            <div className="about-foot">
+              <span>Live projects</span>
+              <span>Modern labs</span>
+              <span>Industry pathways</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Departments Section */}
-      <section id="departments" style={{ padding: "80px 24px", background: "#f8fafc" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 className="section-title">Our Departments</h2>
-          <p className="section-subtitle">Excellence across all engineering disciplines</p>
-          
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-            gap: "24px"
-          }}>
-            {departments.map((dept, idx) => (
-              <div key={idx} className="card" style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "20px",
-                borderLeft: `4px solid ${dept.color}`
-              }}>
-                <div style={{
-                  width: "70px",
-                  height: "70px",
-                  background: `${dept.color}15`,
-                  borderRadius: "14px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "32px",
-                  flexShrink: 0
-                }}>
-                  {dept.icon}
-                </div>
-                <div>
-                  <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "6px" }}>
-                    {dept.name}
-                  </h3>
-                  <p style={{ fontSize: "14px", color: "#6b7280", margin: 0 }}>
-                    B.Tech • M.Tech Programs
-                  </p>
-                </div>
-              </div>
-            ))}
+      <section id="departments" className="section-shell">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">Academics</p>
+            <h2 className="section-title">Departments</h2>
+            <p className="section-subtitle">Programs across engineering disciplines with labs, projects, and practice schools.</p>
           </div>
+        </div>
+        <div className="dept-grid">
+          {departments.map((dept, idx) => (
+            <div key={idx} className="card dept-card" style={{ borderColor: `${dept.color}40` }}>
+              <div className="dept-icon" style={{ background: `${dept.color}20`, color: dept.color }}>
+                {dept.icon}
+              </div>
+              <div>
+                <h3>{dept.name}</h3>
+                <p>B.Tech • M.Tech Programs</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="facilities" style={{ padding: "80px 24px", background: "white" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 className="section-title">Why Choose SRIT?</h2>
-          <p className="section-subtitle">We provide everything you need for a successful career</p>
-          
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "32px"
-          }}>
-            {[
-              { icon: "🏛️", title: "Modern Infrastructure", description: "State-of-the-art labs, smart classrooms, and well-equipped facilities." },
-              { icon: "👨‍🏫", title: "Expert Faculty", description: "Learn from industry experts and experienced academicians." },
-              { icon: "💼", title: "Industry Partnerships", description: "Strong ties with leading companies for internships and placements." },
-              { icon: "🔬", title: "Research Excellence", description: "Cutting-edge research opportunities and innovation labs." },
-              { icon: "🎯", title: "Career Support", description: "Dedicated placement cell with 95%+ placement rate." },
-              { icon: "🌐", title: "Global Exposure", description: "International collaborations and student exchange programs." }
-            ].map((feature, idx) => (
-              <div key={idx} style={{ textAlign: "center", padding: "32px 24px" }}>
-                <div style={{
-                  width: "80px",
-                  height: "80px",
-                  background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
-                  borderRadius: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 24px",
-                  fontSize: "36px",
-                  boxShadow: "0 8px 24px rgba(30, 58, 138, 0.3)"
-                }}>
-                  {feature.icon}
-                </div>
-                <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#1f2937", marginBottom: "12px" }}>
-                  {feature.title}
-                </h3>
-                <p style={{ fontSize: "15px", color: "#6b7280", lineHeight: 1.7 }}>
-                  {feature.description}
-                </p>
-              </div>
-            ))}
+      {/* Explore Campus */}
+      <section className="section-shell explore-section">
+        <div className="section-head">
+          <div>
+            <p className="eyebrow">Explore</p>
+            <h2 className="section-title">Life across campus</h2>
+            <p className="section-subtitle">Facilities, resources, and communities that shape your journey.</p>
           </div>
+          <div className="badge-inline">24/7 Wi-Fi Campus • Modern labs • Active student clubs</div>
+        </div>
+        <div className="explore-grid">
+          {exploreCampus.map((item) => (
+            <div key={item.title} className="explore-card">
+              <div className="explore-tag">{item.tag}</div>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section style={{
-        background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)",
-        padding: "80px 24px",
-        textAlign: "center",
-        color: "white"
-      }}>
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "40px", fontWeight: "700", marginBottom: "20px" }}>
-            Ready to Start Your Journey?
-          </h2>
-          <p style={{ fontSize: "18px", marginBottom: "40px", opacity: 0.9 }}>
-            Access the college portal to view your academic information, marks, and more.
-          </p>
-          <button
-            onClick={handleLoginClick}
-            style={{
-              background: "white",
-              color: "#1e3a8a",
-              border: "none",
-              padding: "18px 48px",
-              borderRadius: "12px",
-              fontSize: "18px",
-              fontWeight: "700",
-              cursor: "pointer",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.2)"
-            }}
-          >
-            {isLoggedIn ? "Go to Dashboard" : "Login to Portal"}
-          </button>
+      <section className="cta-section">
+        <div className="cta-shell">
+          <div>
+            <p className="eyebrow">Portal-first experience</p>
+            <h2 className="section-title">Ready to start your journey?</h2>
+            <p className="section-subtitle">Access academics, marks, attendance, placements, and resources through one secure portal.</p>
+          </div>
+          <div className="cta-actions">
+            <button className="btn-primary" onClick={handleLoginClick}>{isLoggedIn ? "Go to Dashboard" : "Login to Portal"}</button>
+            <Link href="#about" className="btn-ghost">Know more</Link>
+          </div>
         </div>
       </section>
 

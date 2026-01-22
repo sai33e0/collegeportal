@@ -1,29 +1,59 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
 import Link from "next/link";
-import { ROLE_IDS } from "@/lib/constants";
+import { ROLE_IDS, API_BASE_URL } from "@/lib/constants";
+import { getToken } from "@/lib/auth";
+
+interface Subject {
+  id: number;
+  subject_code: string;
+  subject_name: string;
+  semester_id: number;
+  department_id: number;
+  departments?: {
+    name: string;
+  };
+}
 
 export default function FacultyDashboard() {
-  const facultyInfo = {
-    empId: "FAC2021CSE015",
-    department: "Computer Science & Engineering",
-    designation: "Assistant Professor",
-    subjects: 3
-  };
+  const [loading, setLoading] = useState(true);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [facultyInfo, setFacultyInfo] = useState({
+    empId: "",
+    department: "",
+    full_name: ""
+  });
 
-  const assignedSubjects = [
-    { name: "Data Structures", code: "CS301", semester: "3rd", sections: ["A", "B"], students: 120 },
-    { name: "Database Systems", code: "CS401", semester: "4th", sections: ["A"], students: 60 },
-    { name: "Computer Networks", code: "CS501", semester: "5th", sections: ["B"], students: 58 }
-  ];
+  const token = getToken();
 
-  const todaySchedule = [
-    { subject: "Data Structures", time: "09:00 - 10:00 AM", room: "Room 301", section: "CSE-A" },
-    { subject: "Database Systems", time: "11:00 - 12:00 PM", room: "Room 205", section: "CSE-A" },
-    { subject: "Data Structures", time: "02:00 - 03:00 PM", room: "Lab 102", section: "CSE-B" }
-  ];
+  const fetchData = useCallback(async () => {
+    try {
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+
+      // Fetch assigned subjects
+      const subjectsRes = await fetch(`${API_BASE_URL}/faculty/subjects`, { headers });
+      
+      if (subjectsRes.ok) {
+        const data = await subjectsRes.json();
+        setSubjects(data.subjects || []);
+      }
+
+      setLoading(false);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setLoading(false);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const quickActions = [
     { title: "Enter Marks", icon: "📝", description: "Update internal/lab marks", color: "#3b82f6", href: "/faculty/marks" },
@@ -33,11 +63,24 @@ export default function FacultyDashboard() {
   ];
 
   const stats = [
-    { label: "Assigned Subjects", value: "3", icon: "📚", color: "#3b82f6" },
-    { label: "Total Students", value: "238", icon: "🎓", color: "#10b981" },
-    { label: "Classes Today", value: "3", icon: "🏛️", color: "#f59e0b" },
-    { label: "Pending Tasks", value: "5", icon: "📋", color: "#ef4444" }
+    { label: "Assigned Subjects", value: subjects.length.toString(), icon: "📚", color: "#3b82f6" },
+    { label: "Total Students", value: "0", icon: "🎓", color: "#10b981" },
+    { label: "Classes Today", value: "0", icon: "🏛️", color: "#f59e0b" },
+    { label: "Pending Tasks", value: "0", icon: "📋", color: "#ef4444" }
   ];
+
+  if (loading) {
+    return (
+      <ProtectedRoute requiredRoleId={ROLE_IDS.FACULTY}>
+        <div style={{ minHeight: "100vh", background: "#f1f5f9" }}>
+          <Header />
+          <div style={{ padding: "60px", textAlign: "center", color: "#6b7280" }}>
+            Loading dashboard...
+          </div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
 
   return (
     <ProtectedRoute requiredRoleId={ROLE_IDS.FACULTY}>
@@ -47,12 +90,12 @@ export default function FacultyDashboard() {
         <main style={{ maxWidth: "1400px", margin: "0 auto", padding: "32px 24px" }}>
           {/* Welcome Banner */}
           <div style={{
-            background: "linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)",
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
             borderRadius: "20px",
             padding: "40px",
             marginBottom: "32px",
             color: "white",
-            boxShadow: "0 10px 40px rgba(59, 130, 246, 0.3)"
+            boxShadow: "0 10px 40px rgba(255, 107, 53, 0.3)"
           }}>
             <h1 style={{ fontSize: "32px", fontWeight: "700", marginBottom: "8px" }}>
               Welcome, Faculty! 👨‍🏫
@@ -68,11 +111,11 @@ export default function FacultyDashboard() {
               padding: "14px 24px",
               borderRadius: "12px"
             }}>
-              <span>🏛️ {facultyInfo.department}</span>
+              <span>🏛️ {subjects[0]?.departments?.name || 'Department'}</span>
               <span style={{ opacity: 0.5 }}>|</span>
-              <span>📋 {facultyInfo.designation}</span>
+              <span>📋 Assistant Professor</span>
               <span style={{ opacity: 0.5 }}>|</span>
-              <span>🆔 {facultyInfo.empId}</span>
+              <span>🆔 {facultyInfo.empId || 'Faculty'}</span>
             </div>
           </div>
 
@@ -130,33 +173,41 @@ export default function FacultyDashboard() {
               <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
                 <span>📚</span> Assigned Subjects
               </h2>
-              {assignedSubjects.map((subject, idx) => (
-                <div key={idx} style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "20px",
-                  background: "#f8fafc",
-                  borderRadius: "12px",
-                  marginBottom: idx < assignedSubjects.length - 1 ? "12px" : 0,
-                  borderLeft: "4px solid #3b82f6"
-                }}>
-                  <div>
-                    <h3 style={{ fontSize: "16px", fontWeight: "600", color: "#1f2937", marginBottom: "6px" }}>
-                      {subject.name}
-                    </h3>
-                    <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
-                      {subject.code} • {subject.semester} Semester • Section {subject.sections.join(", ")}
-                    </p>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <p style={{ fontSize: "24px", fontWeight: "700", color: "#3b82f6", margin: 0 }}>
-                      {subject.students}
-                    </p>
-                    <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>Students</p>
-                  </div>
+              {subjects.length === 0 ? (
+                <div style={{ padding: "40px", textAlign: "center", color: "#6b7280" }}>
+                  <div style={{ fontSize: "48px", marginBottom: "12px" }}>📚</div>
+                  <p>No subjects assigned yet</p>
+                  <p style={{ fontSize: "14px", marginTop: "8px" }}>Contact admin to assign subjects</p>
                 </div>
-              ))}
+              ) : (
+                subjects.map((subject, idx) => (
+                  <div key={subject.id} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "20px",
+                    background: "#f8fafc",
+                    borderRadius: "12px",
+                    marginBottom: idx < subjects.length - 1 ? "12px" : 0,
+                    borderLeft: "4px solid #3b82f6"
+                  }}>
+                    <div>
+                      <h3 style={{ fontSize: "16px", fontWeight: "600", color: "#1f2937", marginBottom: "6px" }}>
+                        {subject.subject_name}
+                      </h3>
+                      <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
+                        {subject.subject_code} • Semester {subject.semester_id}
+                      </p>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <p style={{ fontSize: "24px", fontWeight: "700", color: "#3b82f6", margin: 0 }}>
+                        0
+                      </p>
+                      <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>Students</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
 
             {/* Today's Schedule */}
@@ -169,39 +220,11 @@ export default function FacultyDashboard() {
               <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
                 <span>📅</span> {"Today's Schedule"}
               </h2>
-              {todaySchedule.map((cls, idx) => (
-                <div key={idx} style={{
-                  padding: "18px",
-                  background: "#f8fafc",
-                  borderRadius: "12px",
-                  marginBottom: idx < todaySchedule.length - 1 ? "12px" : 0
-                }}>
-                  <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginBottom: "10px"
-                  }}>
-                    <span style={{
-                      background: "#3b82f615",
-                      color: "#3b82f6",
-                      padding: "6px 12px",
-                      borderRadius: "6px",
-                      fontSize: "13px",
-                      fontWeight: "600"
-                    }}>
-                      {cls.time}
-                    </span>
-                    <span style={{ fontSize: "13px", color: "#6b7280" }}>{cls.section}</span>
-                  </div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "600", color: "#1f2937", marginBottom: "4px" }}>
-                    {cls.subject}
-                  </h4>
-                  <p style={{ fontSize: "13px", color: "#6b7280", margin: 0 }}>
-                    📍 {cls.room}
-                  </p>
-                </div>
-              ))}
+              <div style={{ padding: "40px", textAlign: "center", color: "#6b7280" }}>
+                <div style={{ fontSize: "48px", marginBottom: "12px" }}>📅</div>
+                <p>Schedule feature coming soon</p>
+                <p style={{ fontSize: "14px", marginTop: "8px" }}>Class timetable will be available here</p>
+              </div>
             </div>
           </div>
 

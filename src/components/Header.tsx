@@ -78,7 +78,7 @@ export default function Header() {
       {/* Top accent bar */}
       <div style={{
         height: "4px",
-        background: "linear-gradient(90deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%)"
+        background: "linear-gradient(90deg, #ff6b35 0%, #ffa952 50%, #ff6b35 100%)"
       }} />
       
       <div style={{
@@ -94,7 +94,7 @@ export default function Header() {
           <div style={{
             width: "56px",
             height: "56px",
-            background: "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)",
+            background: "linear-gradient(135deg, #ff6b35 0%, #ffa952 100%)",
             borderRadius: "12px",
             display: "flex",
             alignItems: "center",

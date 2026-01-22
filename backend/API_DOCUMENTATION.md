@@ -400,6 +400,62 @@ Assign a faculty member to teach a subject.
 }
 ```
 
+---
+
+### Password Management (Admin)
+
+#### POST `/admin/students/:userId/password`
+Change a student's password (admin only).
+
+**Request Body:**
+```json
+{ "new_password": "newStrongPass" }
+```
+
+**Response (200):**
+```json
+{ "message": "Password updated successfully" }
+```
+
+---
+
+## 3. Academic (Fees) APIs
+
+Endpoints to manage academic fee configurations, student service assignments (bus/hostel), payments, and printable receipts.
+
+Schema: see `backend/ACADEMIC_SCHEMA.sql` to create required tables: `fee_configs`, `student_services`, `fee_payments`.
+
+### POST `/academic/config` (Admin)
+Upsert fee configuration for an academic year.
+
+**Body:** `{ "academic_year": 2024, "tuition_fee": 50000, "bus_fee": 12000, "hostel_fee": 30000 }`
+
+**Response:** `{ "message": "Fee config saved", "config": { ... } }`
+
+### GET `/academic/config/:year` (Admin)
+Get fee config for given year.
+
+### POST `/academic/students/:studentId/service` (Admin)
+Assign student to service.
+
+**Body:** `{ "service": "none|bus|hostel", "service_details": "optional", "annual_fee": 12000 }`
+
+### POST `/academic/students/:studentId/payments` (Admin)
+Record a payment for a year.
+
+**Body:** `{ "academic_year": 2024, "tuition_amount": 50000, "service_type": "bus", "service_amount": 12000 }`
+
+**Response:** `{ "message": "Payment recorded", "payment": { "receipt_no": "RCPT-2024-XXXX", ... } }`
+
+### GET `/academic/students/:studentId/fees?year=YYYY` (Admin)
+Get student fee summary (profile, service, config for year if provided, and all payments).
+
+### GET `/academic/me/fees?year=YYYY` (Student)
+Student’s own fee summary.
+
+### GET `/academic/students/:studentId/receipt?year=YYYY` (Admin/Student)
+Get printable receipt data (student name, father name if available, roll no, amounts, year, paid date, receipt no).
+
 **Response (201):**
 ```json
 {

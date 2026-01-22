@@ -70,3 +70,8 @@ export const ROLES = {
   FACULTY: 2,
   STUDENT: 1
 };
+
+// Convenience middleware for specific roles
+export const requireAdmin = [authenticateToken, requireRole([ROLES.ADMIN])];
+export const requireFaculty = [authenticateToken, requireRole([ROLES.FACULTY])];
+export const requireStudent = [authenticateToken, requireRole([ROLES.STUDENT])];
