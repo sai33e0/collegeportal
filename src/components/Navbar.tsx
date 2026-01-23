@@ -101,6 +101,7 @@ export default function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Link href="/" className="nav-link">Home</Link>
           <Link href="#about" className="nav-link">About</Link>
+          <Link href="/notifications" className="nav-link">📢 Notifications</Link>
           <Link href="#departments" className="nav-link">Departments</Link>
           <Link href="#facilities" className="nav-link">Facilities</Link>
           <Link href="#contact" className="nav-link">Contact</Link>
@@ -144,6 +145,7 @@ export default function Navbar() {
         }}>
           <Link href="/" style={{ display: "block", padding: "12px 0", color: "#374151", textDecoration: "none" }}>Home</Link>
           <Link href="#about" style={{ display: "block", padding: "12px 0", color: "#374151", textDecoration: "none" }}>About</Link>
+          <Link href="/notifications" style={{ display: "block", padding: "12px 0", color: "#374151", textDecoration: "none" }}>📢 Notifications</Link>
           <Link href="#departments" style={{ display: "block", padding: "12px 0", color: "#374151", textDecoration: "none" }}>Departments</Link>
           <Link href="#facilities" style={{ display: "block", padding: "12px 0", color: "#374151", textDecoration: "none" }}>Facilities</Link>
           <Link href="#contact" style={{ display: "block", padding: "12px 0", color: "#374151", textDecoration: "none" }}>Contact</Link>

@@ -829,3 +829,310 @@ body {
     padding: 60px 18px;
   }
 }
+
+/* ✨ ANIMATED TEXT EFFECTS - MBU Style */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes floatUp {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 169, 82, 0.8);
+  }
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes buttonHoverGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 107, 53, 0.5), 0 10px 25px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 169, 82, 0.8), 0 15px 35px rgba(255, 107, 53, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(255, 107, 53, 0.5), 0 10px 25px rgba(255, 107, 53, 0.3);
+  }
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+/* Hero Title Animation */
+.hero-title {
+  animation: slideInUp 0.8s ease-out 0.2s both;
+  background: linear-gradient(90deg, var(--foreground), var(--primary), var(--foreground));
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-title:hover {
+  animation: textShimmer 3s linear infinite;
+}
+
+/* Pill Animation */
+.pill {
+  animation: fadeInScale 0.6s ease-out both;
+  display: inline-block;
+}
+
+/* Hero Subtitle Animation */
+.hero-subtitle {
+  animation: slideInUp 0.8s ease-out 0.4s both;
+}
+
+/* Hero Actions Animation */
+.hero-actions {
+  animation: slideInUp 0.8s ease-out 0.6s both;
+}
+
+/* Button Animations */
+.btn-primary, .btn-ghost {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-primary:hover {
+  animation: buttonHoverGlow 1.5s ease-in-out infinite;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+}
+
+.btn-ghost:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+  border-color: var(--primary);
+}
+
+/* Section Head Animations */
+.section-head {
+  animation: slideInUp 0.8s ease-out both;
+}
+
+.section-title {
+  animation: slideInUp 0.8s ease-out 0.1s both;
+}
+
+.section-subtitle {
+  animation: slideInUp 0.8s ease-out 0.2s both;
+  color: var(--gray-300);
+}
+
+/* Card Animations */
+.rank-card {
+  animation: fadeInScale 0.6s ease-out both;
+  transition: all 0.3s ease;
+}
+
+.rank-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.glass-card {
+  animation: slideInUp 0.8s ease-out 0.3s both;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
+}
+
+/* Focus Areas Cards */
+.focus-card {
+  animation: fadeInScale 0.6s ease-out both;
+  transition: all 0.3s ease;
+}
+
+.focus-card:hover {
+  transform: translateY(-15px) scale(1.05);
+  box-shadow: 0 30px 60px rgba(255, 107, 53, 0.2);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 169, 82, 0.05));
+}
+
+/* Stat Number Animation */
+.stat-number {
+  animation: slideInUp 0.8s ease-out 0.2s both;
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* Quick Links Animation */
+.quick-links-grid > div {
+  animation: fadeInScale 0.6s ease-out both;
+  transition: all 0.3s ease;
+}
+
+.quick-links-grid > div:hover {
+  transform: translateY(-12px) scale(1.05);
+  box-shadow: 0 25px 50px rgba(255, 107, 53, 0.25);
+}
+
+/* Explore Campus Cards */
+.explore-card {
+  animation: fadeInScale 0.6s ease-out both;
+  transition: all 0.3s ease;
+}
+
+.explore-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(255, 107, 53, 0.2);
+}
+
+/* Department Grid Animation */
+.dept-card {
+  animation: rotateIn 0.6s ease-out both;
+  transition: all 0.3s ease;
+}
+
+.dept-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 50px rgba(255, 107, 53, 0.25);
+}
+
+/* News Ticker Animation */
+.news-ticker-content span {
+  animation: slideRight 15s linear infinite;
+}
+
+/* Hero Meta Badges */
+.hero-meta {
+  animation: slideInUp 0.8s ease-out 0.5s both;
+}
+
+.meta-badge {
+  animation: fadeInScale 0.6s ease-out both;
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-right: 12px;
+  transition: all 0.3s ease;
+}
+
+.meta-badge:hover {
+  background: rgba(255, 107, 53, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+/* CTA Section Animation */
+.cta-shell {
+  animation: slideInUp 0.8s ease-out both;
+}
+
+.cta-content {
+  animation: slideInUp 0.8s ease-out 0.1s both;
+}
+
+/* Departments Section */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
