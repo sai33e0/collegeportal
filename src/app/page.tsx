@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { isAuthenticated, getRoleId, getRoleRoute } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Notifications from "@/components/Notifications";
 
 export default function HomePage() {
   const router = useRouter();
@@ -164,8 +165,8 @@ export default function HomePage() {
           <div className="badge-inline">Industry-driven curriculum • Outcome-based learning</div>
         </div>
         <div className="rank-grid">
-          {rankings.map((rank) => (
-            <div key={rank.region} className="rank-card" style={{ borderColor: rank.accent }}>
+          {rankings.map((rank, idx) => (
+            <div key={rank.region} className="rank-card" style={{ borderColor: rank.accent, animationDelay: `${idx * 0.1}s` }}>
               <div className="rank-pill" style={{ color: rank.accent }}>{rank.region}</div>
               <h3>{rank.title}</h3>
               <p>{rank.badge}</p>
@@ -185,8 +186,8 @@ export default function HomePage() {
           <Link href="#departments" className="btn-ghost">Browse departments</Link>
         </div>
         <div className="focus-grid">
-          {focusAreas.map((item) => (
-            <div key={item.title} className="focus-card">
+          {focusAreas.map((item, idx) => (
+            <div key={item.title} className="focus-card" style={{ animationDelay: `${idx * 0.1}s` }}>
               <div className="focus-icon">{item.icon}</div>
               <div>
                 <h3>{item.title}</h3>
@@ -208,7 +209,7 @@ export default function HomePage() {
         </div>
         <div className="quick-links-grid">
           {quickLinks.map((link, idx) => (
-            <Link href={link.href} key={idx} className="quick-link-item">
+            <Link href={link.href} key={idx} className="quick-link-item" style={{ animationDelay: `${idx * 0.08}s` }}>
               <div className="quick-link-icon">{link.icon}</div>
               <span className="quick-link-text">{link.title}</span>
               <span className="quick-link-desc">{link.description}</span>
@@ -261,7 +262,7 @@ export default function HomePage() {
         </div>
         <div className="dept-grid">
           {departments.map((dept, idx) => (
-            <div key={idx} className="card dept-card" style={{ borderColor: `${dept.color}40` }}>
+            <div key={idx} className="card dept-card" style={{ borderColor: `${dept.color}40`, animationDelay: `${idx * 0.08}s` }}>
               <div className="dept-icon" style={{ background: `${dept.color}20`, color: dept.color }}>
                 {dept.icon}
               </div>
@@ -285,8 +286,8 @@ export default function HomePage() {
           <div className="badge-inline">24/7 Wi-Fi Campus • Modern labs • Active student clubs</div>
         </div>
         <div className="explore-grid">
-          {exploreCampus.map((item) => (
-            <div key={item.title} className="explore-card">
+          {exploreCampus.map((item, idx) => (
+            <div key={item.title} className="explore-card" style={{ animationDelay: `${idx * 0.1}s` }}>
               <div className="explore-tag">{item.tag}</div>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
@@ -294,6 +295,9 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Notifications & Events Section */}
+      <Notifications />
 
       {/* CTA Section */}
       <section className="cta-section">
