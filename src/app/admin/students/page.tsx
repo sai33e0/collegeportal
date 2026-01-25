@@ -167,9 +167,10 @@ export default function AdminStudentsPage() {
       password: "",
       full_name: student.users?.full_name || "",
       roll_no: student.roll_no,
-      dept_id: student.departments
+      department_id: student.departments
         ? (departments.find(d => d.code === student.departments?.code)?.id?.toString() || "")
         : (student.department_id ? student.department_id.toString() : ""),
+      semester: student.semester ? student.semester.toString() : "6",
       year_of_admission: ((student.year_of_admission ?? new Date().getFullYear())).toString()
     });
     setShowForm(true);
@@ -183,7 +184,8 @@ export default function AdminStudentsPage() {
       password: "",
       full_name: "",
       roll_no: "",
-      dept_id: "",
+      department_id: "",
+      semester: "6",
       year_of_admission: new Date().getFullYear().toString()
     });
   };

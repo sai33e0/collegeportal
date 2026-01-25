@@ -1,0 +1,359 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  background: radial-gradient(120% 120% at 20% 20%, rgba(255, 107, 53, 0.08), transparent),
+    radial-gradient(100% 100% at 80% 0%, rgba(255, 169, 82, 0.08), transparent),
+    var(--background);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: slideInUp 0.8s ease-out both;
+}
+
+.header h2 {
+  font-size: 36px;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #ff6b35, #ffa952);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header p {
+  font-size: 16px;
+  color: var(--gray-300);
+  margin: 0;
+}
+
+/* Filter Tabs */
+.filterTabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  animation: slideInUp 0.8s ease-out 0.1s both;
+}
+
+.filterBtn {
+  padding: 12px 24px;
+  border: 2px solid rgba(255, 107, 53, 0.3);
+  background: rgba(255, 107, 53, 0.05);
+  color: var(--foreground);
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.filterBtn:hover {
+  background: rgba(255, 107, 53, 0.15);
+  border-color: #ff6b35;
+  transform: translateY(-2px);
+}
+
+.filterBtn.active {
+  background: linear-gradient(135deg, #ff6b35, #ffa952);
+  color: white;
+  border-color: #ff6b35;
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+}
+
+/* Posts Grid */
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.postCard {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.6));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: fadeInScale 0.6s ease-out both;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.postCard:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(255, 107, 53, 0.5);
+  box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.8));
+}
+
+.postCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transition: left 0.5s ease;
+}
+
+.postCard:hover::before {
+  left: 100%;
+}
+
+/* Platform Badge */
+.platformBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+}
+
+/* Post Header */
+.postHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.authorInfo h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.verified {
+  color: #3b82f6;
+  font-size: 14px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.handle {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+.timestamp {
+  font-size: 13px;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+
+/* Post Content */
+.postContent {
+  margin-bottom: 16px;
+  animation: slideInUp 0.6s ease-out 0.1s both;
+}
+
+.postContent p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--gray-200);
+  margin: 0 0 12px 0;
+  word-break: break-word;
+}
+
+.postImage {
+  margin-top: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.6s ease-out 0.15s both;
+}
+
+.postImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.postCard:hover .postImage img {
+  transform: scale(1.05);
+}
+
+/* Post Stats */
+.postStats {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 107, 53, 0.1);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  animation: slideInUp 0.6s ease-out 0.2s both;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--gray-300);
+  transition: all 0.3s ease;
+}
+
+.statItem:hover {
+  color: #ff6b35;
+  transform: scale(1.1);
+}
+
+.statIcon {
+  font-size: 16px;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: 12px;
+  animation: slideInUp 0.6s ease-out 0.25s both;
+}
+
+.actionBtn {
+  flex: 1;
+  padding: 10px 12px;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  color: #ff6b35;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.actionBtn:hover {
+  background: rgba(255, 107, 53, 0.2);
+  border-color: #ff6b35;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.2);
+}
+
+.actionBtn:active {
+  transform: translateY(0);
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--gray-400);
+  font-size: 16px;
+  animation: fadeIn 0.6s ease-out both;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 24px 16px;
+  }
+
+  .header h2 {
+    font-size: 28px;
+  }
+
+  .postsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .postCard {
+    padding: 16px;
+  }
+
+  .filterTabs {
+    gap: 8px;
+  }
+
+  .filterBtn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  .postStats {
+    font-size: 12px;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+  }
+
+  .actionBtn {
+    padding: 12px;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
