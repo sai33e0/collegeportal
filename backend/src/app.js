@@ -13,15 +13,26 @@ import studentAttendanceRoutes from './routes/studentattendence.js';
 import academicRoutes from './routes/academic.js';
 import feesRoutes from './routes/fees.js';
 import csvImportRoutes from './routes/csv-import.js';
-
-
-
 const app = express();
 
-// Middleware
+// Configure CORS to allow local dev plus any comma-separated origins from env
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:5173,https://srit.vercel.com')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin) {
+      // Allow non-browser tools (like curl) with no origin
+      return callback(null, true);
+    }
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+  credentials: true,
 }));
 
 app.use(express.json());

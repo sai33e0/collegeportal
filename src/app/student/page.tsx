@@ -62,7 +62,7 @@ export default function StudentDashboard() {
 
   const quickLinks = [
     { title: "View Marks", icon: "📊", description: "Check your marks", color: "#ff6b35", href: "/student/marks" },
-    { title: "Attendance", icon: "📅", description: "View attendance", color: "#ff8c42", description: "View attendance records", color: "#ff8c42", href: "/student/attendance" },
+    { title: "Attendance", icon: "📅", description: "View attendance records", color: "#ff8c42", href: "/student/attendance" },
     { title: "Fee Details", icon: "💰", description: "Payment status", color: "#ffa952", href: "#fees" },
     { title: "Time Table", icon: "🕐", description: "Class schedule", color: "#ff6b35", href: "#" },
     { title: "Library", icon: "📚", description: "E-Library access", color: "#ff8c42", href: "#" },
