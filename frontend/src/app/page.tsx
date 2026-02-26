@@ -7,7 +7,6 @@ import { isAuthenticated, getRoleId, getRoleRoute } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Notifications from "@/components/Notifications";
-import SocialMediaFeed from "@/components/SocialMediaFeed";
 
 export default function HomePage() {
   const router = useRouter();
@@ -301,9 +300,6 @@ export default function HomePage() {
       <Notifications />
 
       {/* Social Media Feed Section */}
-      <section style={{ background: "var(--background)" }}>
-        <SocialMediaFeed />
-      </section>
 
       {/* CTA Section */}
       <section className="cta-section">
