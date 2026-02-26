@@ -1,0 +1,13 @@
+
+> compyle-next@0.1.0 dev
+> next dev -p 5173
+
+   ▲ Next.js 16.0.1 (Turbopack)
+   - Local:        http://localhost:5173
+   - Network:      http://192.168.18.16:5173
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling / ...
+ GET / 200 in 5.6s (compile: 5.1s, render: 553ms)
