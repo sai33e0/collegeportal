@@ -1,13 +1,10 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import app from './src/app.js';
-
-// Load environment variables
-dotenv.config();
 
 const PORT = process.env.PORT || 3001;
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log('===========================================');
   console.log('  SRIT College Portal Backend');
   console.log('===========================================');
@@ -17,13 +14,29 @@ app.listen(PORT, () => {
   console.log('===========================================');
 });
 
+server.on('error', (err) => {
+  if (err?.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use.`);
+    console.error('Stop the other process or set a different PORT in backend/.env (e.g. PORT=3002).');
+    process.exit(1);
+  }
+
+  if (err?.code === 'EACCES') {
+    console.error(`Insufficient permissions to bind to port ${PORT}.`);
+    process.exit(1);
+  }
+
+  console.error('Server failed to start:', err);
+  process.exit(1);
+});
+
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully...');
-  process.exit(0);
+  server.close(() => process.exit(0));
 });
 
 process.on('SIGINT', () => {
   console.log('\nSIGINT received, shutting down gracefully...');
-  process.exit(0);
+  server.close(() => process.exit(0));
 });
