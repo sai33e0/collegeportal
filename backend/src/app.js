@@ -16,7 +16,7 @@ import csvImportRoutes from './routes/csv-import.js';
 const app = express();
 
 // Configure CORS to allow local dev plus any comma-separated origins from env
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:5173,https://srit.vercel.com')
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:5173,https://collegeportel.vercel.app,https://srit.vercel.com')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -25,6 +25,10 @@ app.use(cors({
   origin: (origin, callback) => {
     if (!origin) {
       // Allow non-browser tools (like curl) with no origin
+      return callback(null, true);
+    }
+    // Allow Vercel deployments (production + previews)
+    if (origin.endsWith('.vercel.app')) {
       return callback(null, true);
     }
     if (allowedOrigins.includes(origin)) {
@@ -76,9 +80,12 @@ app.use((req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
   console.error('Server error:', err);
-  res.status(500).json({
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+  const isCorsError = typeof err?.message === 'string' && err.message.includes('not allowed by CORS');
+  const statusCode = isCorsError ? 403 : 500;
+
+  res.status(statusCode).json({
+    error: isCorsError ? 'CORS blocked' : 'Internal server error',
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined,
   });
 });
 
